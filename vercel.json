@@ -1,15 +1,15 @@
 {
   "version": 2,
-  "functions": {
-    "dist/main.js": {
-      "memory": 1024,
-      "maxDuration": 10
+  "builds": [
+    {
+      "src": "Dockerfile",
+      "use": "@vercel/docker"
     }
-  },
+  ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "dist/main.js"
+      "src": "/(.*)",
+      "dest": "/"
     }
   ]
 }
