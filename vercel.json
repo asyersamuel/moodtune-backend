@@ -10,10 +10,6 @@
     {
       "src": "/api/(.*)",
       "dest": "dist/main.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "dist/main.js"
     }
   ]
 }
