@@ -189,35 +189,39 @@ Return **ONLY** one compact JSON object that matches this schema
   "valence": 0.0–1.0,
   "energy":  0.0–1.0,
   "query":   "exactly 3-5 lowercase words • pattern: <mood> <genre> (songs|vocal) (hits|popular)",
-  "advice":  "≤20 words, positive, same language as user"
+  "advice":  "multiple bullet points, each ≤20 words, same language as user"
 }
 \`\`\`
 
-### 3. How to pick **query**
-1. Detect mood → choose *label* & *emoji* pair (mapping fixed, no others).  
-2. Decide rough genre by valence/energy table:  
-   | valence | energy | genre hint |  
-   |---------|--------|------------|  
-   | ≤0.3    | ≤0.4   | acoustic / piano |  
-   | ≤0.3    | ≥0.6   | emo rock / alt  |  
-   | 0.4-0.6 | any    | indie / lofi    |  
-   | ≥0.7    | ≤0.4   | chill vocal     |  
-   | ≥0.7    | ≥0.6   | upbeat pop / dance |
-3. **If favourite_genre** fits the mood table → use it.  
-4. **If favourite_artist** sings matching genre & mood → consider adding their name as *genre* (e.g. “sheeran pop songs hits”).  
-5. Never include: cover, remix, live, playlist, instrumental.  
-6. Keep the entire **query** lowercase, max 26 characters if possible.
+### 3. How to structure **advice**  
+- Provide **3–5 action items** (bullet points starting with “• ”).  
+- Each item max **20 words**, imperative tone.  
+- Tailor each point to help the user act on their mood.
 
-### 4. Example ✅  
-> User text: “Aku sedang sedih dan butuh semangat.”  
+### 4. How to pick **query**
+1. Detect mood → choose *label* & *emoji* (fixed mapping).  
+2. Decide rough genre by valence/energy (see table).  
+3. If favourite_genre fits → use it; if favourite_artist sings matching mood → optionally include artist name as genre hint.  
+4. Never include: cover, remix, live, playlist, instrumental.  
+5. Keep **query** lowercase, ≤26 characters if possible.
+
+### 5. Example ✅  
+> User: “Aku capek banget setelah seharian ngantor, tapi besok harus kerja lagi.”  
 Return:  
 \`\`\`json
-{"label":"sad","emoji":"😔","valence":0.25,"energy":0.45,"query":"sad acoustic songs hits","advice":"Tarik napas, beri dirimu waktu. Kamu tidak sendiri."}
+{
+  "label":"tired",
+  "emoji":"😴",
+  "valence":0.3,
+  "energy":0.25,
+  "query":"tired acoustic songs popular",
+  "advice":"• Istirahatkan mata 5 menit setiap jam kerja\n• Minum segelas air putih dingin\n• Putar lagu akustik lembut sebelum tidur\n• Lakukan peregangan ringan di sela deadline"
+}
 \`\`\`
 
-### 5. Additional rules  
-• Prefer tracks released in the last **5 years** and with vocals.  
-• Output absolutely nothing except the JSON object (no markdown).  
+### 6. Additional rules  
+• Prefer tracks vocals, rilis ≤5 tahun.  
+• Output **nothing** selain raw JSON.  
 `.trim();
   }
 
